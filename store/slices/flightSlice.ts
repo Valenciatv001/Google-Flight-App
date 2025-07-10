@@ -226,6 +226,9 @@ const formatCityForAPI = (input: string): string => {
     DUBAI: 'DUBA',
     SYD: 'SYDA',
     SYDNEY: 'SYDA',
+    HOU: 'HOUA',
+    HOUSTON: 'HOUA',
+    IAH: 'IAHA',
   };
 
   const upperInput = input.toUpperCase().trim();
@@ -249,6 +252,7 @@ const formatCityForAPI = (input: string): string => {
 
 // Helper function to parse Sky Scrapper API response
 const parseFlightData = (apiResponse: any): FlightData[] => {
+  console.log('Parsing flight data:', apiResponse);
   try {
     if (!apiResponse?.data?.itineraries) {
       return [];
@@ -313,6 +317,112 @@ const parseFlightData = (apiResponse: any): FlightData[] => {
   }
 };
 
+// export const searchFlights = createAsyncThunk(
+//   'flight/searchFlights',
+//   async (params: SearchParams) => {
+//     try {
+//       const rapidApiKey = process.env.EXPO_PUBLIC_RAPIDAPI_KEY;
+
+//       if (!rapidApiKey) {
+//         throw new Error(
+//           'RapidAPI key not configured. Please add EXPO_PUBLIC_RAPIDAPI_KEY to your environment variables.'
+//         );
+//       }
+
+//       // Format the search parameters for Sky Scrapper API
+//       const origin = formatCityForAPI(params.origin);
+//       const destination = formatCityForAPI(params.destination);
+
+//       // Format date to YYYY-MM-DD if not already in that format
+//       let formattedDate = params.date;
+//       if (!/^\d{4}-\d{2}-\d{2}$/.test(params.date)) {
+//         // Try to parse and reformat the date
+//         const dateObj = new Date(params.date);
+//         if (!isNaN(dateObj.getTime())) {
+//           formattedDate = dateObj.toISOString().split('T')[0];
+//         }
+//       }
+
+//       const legs = JSON.stringify([
+//         {
+//           destination: destination,
+//           origin: origin,
+//           date: formattedDate,
+//         },
+//       ]);
+
+//       console.log('API Request Params:', {
+//         origin,
+//         destination,
+//         formattedDate,
+//         legs,
+//       });
+
+//       const options = {
+//         method: 'GET',
+//         url: 'https://sky-scrapper.p.rapidapi.com/api/v1/flights/getFlightDetails',
+//         params: {
+//           legs,
+//           adults: params.passengers.toString(),
+//           currency: 'USD',
+//           locale: 'en-US',
+//           market: 'en-US',
+//           cabinClass: 'economy',
+//           countryCode: 'US',
+//         },
+//         headers: {
+//           'x-rapidapi-key': rapidApiKey,
+//           'x-rapidapi-host': 'sky-scrapper.p.rapidapi.com',
+//         },
+//         timeout: 30000, // 30 second timeout
+//       };
+
+//       const response = await axios.request(options);
+
+//       if (!response.data) {
+//         throw new Error('No data received from flight search API');
+//       }
+
+//       const flights = parseFlightData(response.data);
+
+//       if (flights.length === 0) {
+//         throw new Error(
+//           'No flights found for the specified route and date. Please try different search criteria.'
+//         );
+//       }
+
+//       return flights;
+//     } catch (error) {
+//       if (axios.isAxiosError(error)) {
+//         if (error.code === 'ECONNABORTED') {
+//           throw new Error(
+//             'Request timeout. Please check your internet connection and try again.'
+//           );
+//         }
+//         if (error.response?.status === 429) {
+//           throw new Error(
+//             'Too many requests. Please wait a moment and try again.'
+//           );
+//         }
+//         if (error.response?.status === 401) {
+//           throw new Error(
+//             'Invalid API key. Please check your RapidAPI configuration.'
+//           );
+//         }
+//         if (error.response?.data?.message) {
+//           throw new Error(error.response.data.message);
+//         }
+//       }
+
+//       if (error instanceof Error) {
+//         throw error;
+//       }
+
+//       throw new Error('Failed to search flights. Please try again.');
+//     }
+//   }
+// );
+
 export const searchFlights = createAsyncThunk(
   'flight/searchFlights',
   async (params: SearchParams) => {
@@ -320,19 +430,14 @@ export const searchFlights = createAsyncThunk(
       const rapidApiKey = process.env.EXPO_PUBLIC_RAPIDAPI_KEY;
 
       if (!rapidApiKey) {
-        throw new Error(
-          'RapidAPI key not configured. Please add EXPO_PUBLIC_RAPIDAPI_KEY to your environment variables.'
-        );
+        throw new Error('RapidAPI key not configured.');
       }
 
-      // Format the search parameters for Sky Scrapper API
       const origin = formatCityForAPI(params.origin);
       const destination = formatCityForAPI(params.destination);
 
-      // Format date to YYYY-MM-DD if not already in that format
       let formattedDate = params.date;
       if (!/^\d{4}-\d{2}-\d{2}$/.test(params.date)) {
-        // Try to parse and reformat the date
         const dateObj = new Date(params.date);
         if (!isNaN(dateObj.getTime())) {
           formattedDate = dateObj.toISOString().split('T')[0];
@@ -341,73 +446,77 @@ export const searchFlights = createAsyncThunk(
 
       const legs = JSON.stringify([
         {
-          destination: destination,
-          origin: origin,
+          origin,
+          destination,
           date: formattedDate,
         },
       ]);
 
-      const options = {
-        method: 'GET',
-        url: 'https://sky-scrapper.p.rapidapi.com/api/v1/flights/getFlightDetails',
-        params: {
-          legs,
-          adults: params.passengers.toString(),
-          currency: 'USD',
-          locale: 'en-US',
-          market: 'en-US',
-          cabinClass: 'economy',
-          countryCode: 'US',
-        },
-        headers: {
-          'x-rapidapi-key': rapidApiKey,
-          'x-rapidapi-host': 'sky-scrapper.p.rapidapi.com',
-        },
-        timeout: 30000, // 30 second timeout
-      };
+      // STEP 1: Call searchFlights to get sessionId
+      const searchResponse = await axios.get(
+        'https://sky-scrapper.p.rapidapi.com/api/v1/flights/searchFlights',
+        {
+          params: {
+            legs,
+            adults: params.passengers.toString(),
+            currency: 'USD',
+            locale: 'en-US',
+            market: 'US',
+            cabinClass: 'economy',
+            countryCode: 'US',
+          },
+          headers: {
+            'x-rapidapi-key': rapidApiKey,
+            'x-rapidapi-host': 'sky-scrapper.p.rapidapi.com',
+          },
+        }
+      );
 
-      const response = await axios.request(options);
-
-      if (!response.data) {
-        throw new Error('No data received from flight search API');
+      const sessionId = searchResponse.data?.sessionId;
+      if (!sessionId) {
+        throw new Error('Session ID not returned. Check search parameters.');
       }
 
-      const flights = parseFlightData(response.data);
+      // STEP 2: Call getFlightDetails using sessionId
+      const detailResponse = await axios.get(
+        'https://sky-scrapper.p.rapidapi.com/api/v1/flights/getFlightDetails',
+        {
+          params: {
+            sessionId,
+          },
+          headers: {
+            'x-rapidapi-key': rapidApiKey,
+            'x-rapidapi-host': 'sky-scrapper.p.rapidapi.com',
+          },
+        }
+      );
+
+      const flights = parseFlightData(detailResponse.data);
 
       if (flights.length === 0) {
-        throw new Error(
-          'No flights found for the specified route and date. Please try different search criteria.'
-        );
+        throw new Error('No flights found. Try different search criteria.');
       }
 
       return flights;
     } catch (error) {
       if (axios.isAxiosError(error)) {
         if (error.code === 'ECONNABORTED') {
-          throw new Error(
-            'Request timeout. Please check your internet connection and try again.'
-          );
-        }
-        if (error.response?.status === 429) {
-          throw new Error(
-            'Too many requests. Please wait a moment and try again.'
-          );
+          throw new Error('Request timed out. Check your internet.');
         }
         if (error.response?.status === 401) {
-          throw new Error(
-            'Invalid API key. Please check your RapidAPI configuration.'
-          );
+          throw new Error('Invalid API key.');
+        }
+        if (error.response?.status === 429) {
+          throw new Error('Rate limit hit. Try again later.');
         }
         if (error.response?.data?.message) {
           throw new Error(error.response.data.message);
         }
       }
-
       if (error instanceof Error) {
         throw error;
       }
-
-      throw new Error('Failed to search flights. Please try again.');
+      throw new Error('Flight search failed. Try again.');
     }
   }
 );
