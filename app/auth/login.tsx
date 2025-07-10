@@ -91,17 +91,14 @@ export default function LoginScreen() {
   };
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={{ flex: 1 }}
-      keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 0}
-      enabled
-    >
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <LinearGradient
-          colors={['#E3F2FD', '#FFFFFF']}
-          style={styles.container}
-        >
+    <LinearGradient colors={['#E3F2FD', '#FFFFFF']} style={styles.container}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={{ flex: 1 }}
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 0}
+        enabled
+      >
+        <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.content}>
             <TouchableOpacity
               style={styles.backButton}
@@ -168,9 +165,9 @@ export default function LoginScreen() {
               </TouchableOpacity>
             </View>
           </View>
-        </LinearGradient>
-      </ScrollView>
-    </KeyboardAvoidingView>
+        </ScrollView>
+      </KeyboardAvoidingView>
+    </LinearGradient>
   );
 }
 
