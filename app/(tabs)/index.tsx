@@ -32,11 +32,6 @@ export default function HomeScreen() {
         style={styles.scrollView}
         showsVerticalScrollIndicator={false}
       >
-        {/* <View style={styles.header}>
-          <Text style={styles.title}>Find Your Flight</Text>
-          <Text style={styles.subtitle}>Search and book flights worldwide</Text>
-        </View> */}
-
         <SearchForm />
 
         <FlightResults />
