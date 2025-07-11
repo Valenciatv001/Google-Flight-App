@@ -21,10 +21,19 @@ This is an [Expo](https://expo.dev) project created with [`create-expo-app`](htt
    npm install
    ```
 
-2. Start the app
+2. Update the Enivronment Variables in the `.env` file
 
    ```bash
-   npx expo start
+   EXPO_PUBLIC_SUPABASE_URL=
+   EXPO_PUBLIC_SUPABASE_ANON_KEY=
+   EXPO_PUBLIC_SUPABASE_SERVICE_ROLE_KEY=
+   EXPO_PUBLIC_RAPIDAPI_KEY=0
+
+   ```
+
+3. Run the app
+   ```bash
+      npx expo start
    ```
 
 In the output, you'll find options to open the app in a
