@@ -23,14 +23,19 @@ export default function HomeScreen() {
 
   return (
     <LinearGradient colors={['#E3F2FD', '#FFFFFF']} style={styles.container}>
+      <View style={styles.header}>
+        <Text style={styles.title}>Find Your Flight</Text>
+        <Text style={styles.subtitle}>Search and book flights worldwide</Text>
+      </View>
+
       <ScrollView
         style={styles.scrollView}
         showsVerticalScrollIndicator={false}
       >
-        <View style={styles.header}>
+        {/* <View style={styles.header}>
           <Text style={styles.title}>Find Your Flight</Text>
           <Text style={styles.subtitle}>Search and book flights worldwide</Text>
-        </View>
+        </View> */}
 
         <SearchForm />
 
