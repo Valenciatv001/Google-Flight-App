@@ -22,18 +22,18 @@ export default function HomeScreen() {
   }
 
   return (
-    <LinearGradient
-      colors={['#E3F2FD', '#FFFFFF']}
-      style={styles.container}
-    >
-      <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
+    <LinearGradient colors={['#E3F2FD', '#FFFFFF']} style={styles.container}>
+      <ScrollView
+        style={styles.scrollView}
+        showsVerticalScrollIndicator={false}
+      >
         <View style={styles.header}>
           <Text style={styles.title}>Find Your Flight</Text>
           <Text style={styles.subtitle}>Search and book flights worldwide</Text>
         </View>
-        
+
         <SearchForm />
-        
+
         <FlightResults />
       </ScrollView>
     </LinearGradient>

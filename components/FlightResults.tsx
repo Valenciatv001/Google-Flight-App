@@ -1,10 +1,19 @@
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  FlatList,
+  TouchableOpacity,
+  ActivityIndicator,
+} from 'react-native';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/store';
 import { FlightCard } from '@/components/FlightCard';
 
 export function FlightResults() {
-  const { flights, isLoading, error, searchParams } = useSelector((state: RootState) => state.flight);
+  const { flights, isLoading, error, searchParams } = useSelector(
+    (state: RootState) => state.flight
+  );
 
   if (isLoading) {
     return (
@@ -29,7 +38,9 @@ export function FlightResults() {
   if (!searchParams) {
     return (
       <View style={styles.emptyContainer}>
-        <Text style={styles.emptyText}>Enter your travel details to search for flights</Text>
+        <Text style={styles.emptyText}>
+          Enter your travel details to search for flights
+        </Text>
       </View>
     );
   }
@@ -37,7 +48,9 @@ export function FlightResults() {
   if (flights.length === 0 && searchParams) {
     return (
       <View style={styles.emptyContainer}>
-        <Text style={styles.emptyText}>No flights found for your search criteria</Text>
+        <Text style={styles.emptyText}>
+          No flights found for your search criteria
+        </Text>
       </View>
     );
   }
@@ -45,20 +58,20 @@ export function FlightResults() {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.resultsTitle}>
-          {flights.length} flights found
-        </Text>
+        <Text style={styles.resultsTitle}>{flights.length} flights found</Text>
         <Text style={styles.searchSummary}>
-          {searchParams.origin} → {searchParams.destination} • {searchParams.date}
+          {searchParams.origin} → {searchParams.destination} •{' '}
+          {searchParams.date}
         </Text>
       </View>
-      
+
       <FlatList
         data={flights}
         renderItem={({ item }) => <FlightCard flight={item} />}
         keyExtractor={(item) => item.id}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.listContainer}
+        scrollEnabled={false}
       />
     </View>
   );

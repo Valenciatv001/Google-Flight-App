@@ -15,7 +15,7 @@ import { AppDispatch } from '@/store';
 export function SearchForm() {
   const [origin, setOrigin] = useState('');
   const [destination, setDestination] = useState('');
-  const [date, setDate] = useState('2024-12-20');
+  const [date, setDate] = useState(new Date().toISOString().split('T')[0]); // Default to today's date
   const [passengers, setPassengers] = useState('1');
   const dispatch = useDispatch<AppDispatch>();
 
@@ -66,7 +66,7 @@ export function SearchForm() {
               <Calendar size={20} color="#666" />
               <TextInput
                 style={styles.input}
-                placeholder="Date (e.g., 2024-12-20)"
+                placeholder="Date (e.g., 2025-12-20)"
                 value={date}
                 onChangeText={setDate}
               />
