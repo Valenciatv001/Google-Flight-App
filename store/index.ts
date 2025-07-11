@@ -4,8 +4,8 @@ import flightReducer from './slices/flightSlice';
 
 export const store = configureStore({
   reducer: {
-    auth: authReducer,
-    flight: flightReducer,
+    auth: authReducer.reducer,
+    flight: flightReducer.reducer,
   },
 });
 

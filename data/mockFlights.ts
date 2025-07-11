@@ -1,0 +1,118 @@
+import { FlightData } from '@/store/slices/flightSlice';
+
+export const mockFlights: FlightData[] = [
+  {
+    id: '1',
+    airline: 'American Airlines',
+    price: 299,
+    currency: 'USD',
+    departure: {
+      airport: 'LAX',
+      city: 'Los Angeles',
+      time: '08:30 AM',
+    },
+    arrival: {
+      airport: 'JFK',
+      city: 'New York',
+      time: '04:45 PM',
+    },
+    duration: '5h 15m',
+    stops: 0,
+    aircraft: 'Boeing 737',
+  },
+  {
+    id: '2',
+    airline: 'Delta Air Lines',
+    price: 325,
+    currency: 'USD',
+    departure: {
+      airport: 'LAX',
+      city: 'Los Angeles',
+      time: '10:15 AM',
+    },
+    arrival: {
+      airport: 'JFK',
+      city: 'New York',
+      time: '06:30 PM',
+    },
+    duration: '5h 15m',
+    stops: 0,
+    aircraft: 'Airbus A320',
+  },
+  {
+    id: '3',
+    airline: 'United Airlines',
+    price: 280,
+    currency: 'USD',
+    departure: {
+      airport: 'LAX',
+      city: 'Los Angeles',
+      time: '01:20 PM',
+    },
+    arrival: {
+      airport: 'JFK',
+      city: 'New York',
+      time: '09:35 PM',
+    },
+    duration: '5h 15m',
+    stops: 0,
+    aircraft: 'Boeing 757',
+  },
+  {
+    id: '4',
+    airline: 'Southwest Airlines',
+    price: 250,
+    currency: 'USD',
+    departure: {
+      airport: 'LAX',
+      city: 'Los Angeles',
+      time: '07:45 AM',
+    },
+    arrival: {
+      airport: 'JFK',
+      city: 'New York',
+      time: '03:00 PM',
+    },
+    duration: '5h 15m',
+    stops: 0,
+    aircraft: 'Boeing 767',
+  },
+  {
+    id: '5',
+    airline: 'JetBlue Airways',
+    price: 310,
+    currency: 'USD',
+    departure: {
+      airport: 'LAX',
+      city: 'Los Angeles',
+      time: '03:00 PM',
+    },
+    arrival: {
+      airport: 'JFK',
+      city: 'New York',
+      time: '11:15 PM',
+    },
+    duration: '5h 15m',
+    stops: 0,
+    aircraft: 'Airbus A321',
+  },
+  {
+    id: '6',
+    airline: 'Alaska Airlines',
+    price: 290,
+    currency: 'USD',
+    departure: {
+      airport: 'LAX',
+      city: 'Los Angeles',
+      time: '09:00 AM',
+    },
+    arrival: {
+      airport: 'JFK',
+      city: 'New York',
+      time: '05:15 PM',
+    },
+    duration: '5h 15m',
+    stops: 0,
+    aircraft: 'Boeing 737',
+  },
+];

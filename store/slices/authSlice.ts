@@ -1,12 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { User as SupabaseUser } from '@supabase/supabase-js';
 
-interface User extends SupabaseUser {
-  user_metadata?: {
-    name?: string;
-    full_name?: string;
-  };
-}
+// Use SupabaseUser directly for user type compatibility
+type User = SupabaseUser;
 
 interface AuthState {
   user: User | null;
@@ -38,7 +34,10 @@ const authSlice = createSlice({
       state.isAuthenticated = true;
       state.error = null;
     },
-    setSession: (state, action: PayloadAction<{ user: User; session: any }>) => {
+    setSession: (
+      state,
+      action: PayloadAction<{ user: User; session: any }>
+    ) => {
       state.user = action.payload.user;
       state.session = action.payload.session;
       state.isAuthenticated = !!action.payload.user;
@@ -62,5 +61,12 @@ const authSlice = createSlice({
   },
 });
 
-export const { loginStart, loginSuccess, loginFailure, logout, clearError, setSession } = authSlice.actions;
-export default authSlice.reducer;
+export const {
+  loginStart,
+  loginSuccess,
+  loginFailure,
+  logout,
+  clearError,
+  setSession,
+} = authSlice.actions;
+export default authSlice;
