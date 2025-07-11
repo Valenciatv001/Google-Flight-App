@@ -1,7 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { User as SupabaseUser } from '@supabase/supabase-js';
 
-// Use SupabaseUser directly for user type compatibility
 type User = SupabaseUser;
 
 interface AuthState {
